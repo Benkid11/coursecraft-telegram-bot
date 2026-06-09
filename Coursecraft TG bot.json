@@ -16,11 +16,11 @@
       ],
       "id": "22155d79-3540-4863-acdf-c50c09261aaf",
       "name": "Telegram Trigger",
-      "webhookId": "b0532822-4f4a-4e09-a7e2-6701a2abd04d",
+      "webhookId": "WEBHOOK_ID_1",
       "credentials": {
         "telegramApi": {
-          "id": "rXN90Mmjt7nlHJbU",
-          "name": "CourseCraft"
+          "id": "YOUR_TELEGRAM_CREDENTIAL_ID",
+          "name": "Your Telegram Bot Name"
         }
       }
     },
@@ -33,7 +33,7 @@
         -160
       ],
       "id": "a6db7870-5a99-4dc9-8c2d-ab72b688f8de",
-      "name": "When clicking ‘Execute workflow’"
+      "name": "When clicking 'Execute workflow'"
     },
     {
       "parameters": {
@@ -67,8 +67,8 @@
       "name": "Embeddings Mistral Cloud",
       "credentials": {
         "mistralCloudApi": {
-          "id": "E4qcuIrns774xu1s",
-          "name": "Mistral Cloud account"
+          "id": "YOUR_MISTRAL_CREDENTIAL_ID",
+          "name": "Your Mistral Cloud account"
         }
       }
     },
@@ -110,21 +110,18 @@
         "contextWindowLength": 20
       },
       "id": "d2786bc2-2498-4ca6-a639-ce96d19ba2d2",
-      "cid": "Ikx1Y2FzIFBleXJpbiI",
       "name": "Simple Memory1",
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
-      "creator": "Lucas Peyrin",
       "position": [
         1120,
         80
       ],
-      "typeVersion": 1.3,
-      "notes": "© 2025 Lucas Peyrin"
+      "typeVersion": 1.3
     },
     {
       "parameters": {
         "mode": "retrieve-as-tool",
-        "toolDescription": "Fetches and returns relevant documents from a knowledge source to support the AI agent’s response.",
+        "toolDescription": "Fetches and returns relevant documents from a knowledge source to support the AI agent's response.",
         "memoryKey": {
           "__rl": true,
           "mode": "list",
@@ -156,11 +153,11 @@
       ],
       "id": "bc496a15-65de-4ed2-aea9-94ff97b5fe1b",
       "name": "Send a text message1",
-      "webhookId": "10602370-4fcd-40ee-9fdc-fa2a3fa97eaf",
+      "webhookId": "WEBHOOK_ID_2",
       "credentials": {
         "telegramApi": {
-          "id": "rXN90Mmjt7nlHJbU",
-          "name": "CourseCraft"
+          "id": "YOUR_TELEGRAM_CREDENTIAL_ID",
+          "name": "Your Telegram Bot Name"
         }
       }
     },
@@ -179,15 +176,15 @@
       "name": "Mistral Cloud Chat Model1",
       "credentials": {
         "mistralCloudApi": {
-          "id": "E4qcuIrns774xu1s",
-          "name": "Mistral Cloud account"
+          "id": "YOUR_MISTRAL_CREDENTIAL_ID",
+          "name": "Your Mistral Cloud account"
         }
       }
     },
     {
       "parameters": {
         "operation": "get",
-        "documentURL": "https://docs.google.com/document/d/1uZWcipi9QRRALXcTLqvZZ6olwun_L7dfPiBu74JiJRY/edit?usp=sharing"
+        "documentURL": "https://docs.google.com/document/d/YOUR_GOOGLE_DOC_ID/edit?usp=sharing"
       },
       "type": "n8n-nodes-base.googleDocs",
       "typeVersion": 2,
@@ -199,8 +196,8 @@
       "name": "Get a document",
       "credentials": {
         "googleDocsOAuth2Api": {
-          "id": "JeetxBBxBHLYuZoN",
-          "name": "Google Docs account"
+          "id": "YOUR_GOOGLE_DOCS_CREDENTIAL_ID",
+          "name": "Your Google Docs account"
         }
       }
     },
@@ -221,7 +218,7 @@
   ],
   "pinData": {},
   "connections": {
-    "When clicking ‘Execute workflow’": {
+    "When clicking 'Execute workflow'": {
       "main": [
         [
           {
@@ -341,12 +338,5 @@
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate"
-  },
-  "versionId": "76df9046-2a40-454c-bf40-5fae30c5fc6b",
-  "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "019af642f556613bba15a64b552bdfe9e82d75304bdfce8a28c92b59a3a2c723"
-  },
-  "id": "r0WAwVuJ748HXz8Z",
-  "tags": []
+  }
 }
