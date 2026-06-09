@@ -1,0 +1,352 @@
+{
+  "name": "Coursecraft TG bot",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "*"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        784,
+        -160
+      ],
+      "id": "22155d79-3540-4863-acdf-c50c09261aaf",
+      "name": "Telegram Trigger",
+      "webhookId": "b0532822-4f4a-4e09-a7e2-6701a2abd04d",
+      "credentials": {
+        "telegramApi": {
+          "id": "rXN90Mmjt7nlHJbU",
+          "name": "CourseCraft"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        1712,
+        -160
+      ],
+      "id": "a6db7870-5a99-4dc9-8c2d-ab72b688f8de",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "memoryKey": {
+          "__rl": true,
+          "value": "vector_store_key",
+          "mode": "list"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1.2,
+      "position": [
+        2176,
+        -160
+      ],
+      "id": "51ba29ae-9bb2-4f67-b384-59986820aa93",
+      "name": "Insert Data to Store"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        1584,
+        480
+      ],
+      "id": "73304632-edb8-4c94-8c56-85fe3491fc3e",
+      "name": "Embeddings Mistral Cloud",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "E4qcuIrns774xu1s",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "textSplittingMode": "custom",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        2160,
+        208
+      ],
+      "id": "d5ec35e4-9292-476d-ae6b-52ee7cb41c2b",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "options": {
+          "systemMessage": "You are \"Eduvi Assistant\" – a friendly, knowledgeable, and professional AI learning assistant for Eduvi (CourseCraft).\n\n**Instructions:**\n\n1. For greetings (hi, hello, hey, yo, good morning, etc.), respond warmly and ask how you can help with learning, courses, or the Eduvi platform.\n\n2. For ANY questions about Eduvi, including available courses, subjects, learning levels, pricing, mentors, certificates, platform features, enrollment, or course recommendations — you MUST use your retrieval tool to get accurate information.\n\n3. Answer ONLY using information returned by the tool. Never make up course details, pricing, certificates, instructors, schedules, requirements, policies, or platform features.\n\n4. If the tool returns no relevant information, respond exactly:\n   \"I don't have that detail right now, but you can explore the Eduvi platform to find more information.\"\n\n5. For course recommendations: Ask about their education level or goals if unclear, then recommend based on tool results and explain why it fits their needs.\n\n6. For support issues (payment problems, billing, refunds, account access, complaints, or requests to speak with a human):\n   Ask: \"I'll connect you with our support team. Could I get your name and email address?\"\n   \n   Once you receive both, respond exactly:\n   [ESCALATE] Name: {name} | Email: {email} | Issue: {brief description}\n   Thank you! Our team will reach out to you shortly. Is there anything else I can help you with?\n\n7. For educational questions about Math, English, Science, Computer Studies, Biology, Physics, Chemistry, History, Art, or French, provide helpful learning support and explanations.\n\n8. Keep responses concise, friendly, and easy to understand."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1040,
+        -160
+      ],
+      "id": "8f25b722-a7ea-492d-b66e-f53ef54434fe",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "telegram-key",
+        "contextWindowLength": 20
+      },
+      "id": "d2786bc2-2498-4ca6-a639-ce96d19ba2d2",
+      "cid": "Ikx1Y2FzIFBleXJpbiI",
+      "name": "Simple Memory1",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "creator": "Lucas Peyrin",
+      "position": [
+        1120,
+        80
+      ],
+      "typeVersion": 1.3,
+      "notes": "© 2025 Lucas Peyrin"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Fetches and returns relevant documents from a knowledge source to support the AI agent’s response.",
+        "memoryKey": {
+          "__rl": true,
+          "mode": "list",
+          "value": "vector_store_key"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1.3,
+      "position": [
+        1248,
+        80
+      ],
+      "id": "191d5f05-e075-46a2-8452-557fd4549955",
+      "name": "Simple Vector Store1"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.from.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1392,
+        -160
+      ],
+      "id": "bc496a15-65de-4ed2-aea9-94ff97b5fe1b",
+      "name": "Send a text message1",
+      "webhookId": "10602370-4fcd-40ee-9fdc-fa2a3fa97eaf",
+      "credentials": {
+        "telegramApi": {
+          "id": "rXN90Mmjt7nlHJbU",
+          "name": "CourseCraft"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "ministral-8b-2512",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        912,
+        64
+      ],
+      "id": "d90f41ea-a3d2-416c-b58f-6baab1bd46e9",
+      "name": "Mistral Cloud Chat Model1",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "E4qcuIrns774xu1s",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "documentURL": "https://docs.google.com/document/d/1uZWcipi9QRRALXcTLqvZZ6olwun_L7dfPiBu74JiJRY/edit?usp=sharing"
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        1888,
+        -160
+      ],
+      "id": "5094f224-b137-4392-a59e-73981376bca2",
+      "name": "Get a document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "JeetxBBxBHLYuZoN",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chunkOverlap": 100,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        2176,
+        400
+      ],
+      "id": "281f9214-b174-4dc8-98be-eca963883226",
+      "name": "Recursive Character Text Splitter"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Mistral Cloud": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Simple Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          },
+          {
+            "node": "Insert Data to Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Insert Data to Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Send a text message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Vector Store1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a document": {
+      "main": [
+        [
+          {
+            "node": "Insert Data to Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "76df9046-2a40-454c-bf40-5fae30c5fc6b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "019af642f556613bba15a64b552bdfe9e82d75304bdfce8a28c92b59a3a2c723"
+  },
+  "id": "r0WAwVuJ748HXz8Z",
+  "tags": []
+}
